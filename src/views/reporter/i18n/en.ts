@@ -1,0 +1,21 @@
+export default {
+	departmentalDaily: {
+		index: '#',
+		nickname: 'nickname',
+		month: 'month',
+		chioceMonth: 'chioce month',
+		city: 'city',
+		lushang: 'Pure Road(day)',
+		mendian: 'Go to the store(times)',
+		jiangke: 'Online lectures(times)',
+		yizhen: 'Appointment for consultation(home)',
+		yizhenNum: 'Number of free clinics(individual)',
+		chengjiaoNum: 'Number of transactions in free clinics(individual)',
+		chudan: 'Appointment for consultation and issuance of documents(pot)',
+		unitPrice: 'Transaction unit price(¥)',
+		// please_enter_the_role_Code: 'please enter the role Code',
+		// please_enter_the_role_description: 'please enter the role description',
+		// menu_authority: 'menu authority',
+		// please_select: 'please select',
+	},
+};
