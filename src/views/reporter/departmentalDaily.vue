@@ -3,18 +3,19 @@
 		<div class="layout-padding-auto layout-padding-view">
 			<el-row shadow="hover" v-show="showSearch" class="ml10">
 				<el-form :model="state.queryForm" ref="queryRef" :inline="true" @keyup.enter="getDataList">
-					<el-form-item :label="t('departmentalDaily.nickname')" prop="nickname">
-						<el-select collapse-tags collapse-tags-tooltip multiple v-model="state.queryForm.nickname">
-							<el-option :key="index" :label="item.label" :value="item.value" v-for="(item, index) in nickNameList"></el-option>
+					<el-form-item :label="t('departmentalDaily.nickname')" prop="userId">
+						<el-select collapse-tags collapse-tags-tooltip v-model="state.queryForm.userId">
+							<el-option :key="index" :label="item.nickname" :value="item.userId" v-for="(item, index) in nickNameList"></el-option>
 						</el-select>
 					</el-form-item>
 					<el-form-item :label="t('departmentalDaily.chioceMonth')" prop="month">
 						<el-date-picker
-							v-model="state.queryForm.nickname.month"
+							v-model="state.queryForm.month"
 							type="monthrange"
 							range-separator="到"
 							start-placeholder="开始月份"
 							end-placeholder="结束月份"
+							value-format="YYYY-MM"
 						/>
 					</el-form-item>
 					<el-form-item>
@@ -54,11 +55,12 @@
 				:cell-style="tableStyle.cellStyle"
 				:header-cell-style="tableStyle.headerCellStyle"
 			>
-				<el-table-column type="selection" :selectable="handleSelectable" width="50" align="center" />
+				<!-- <el-table-column type="selection" :selectable="handleSelectable" width="50" align="center" /> -->
 				<el-table-column type="index" :label="$t('departmentalDaily.index')" width="70" />
 				<el-table-column prop="nickname" :label="$t('departmentalDaily.nickname')" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="month" :label="$t('departmentalDaily.month')" show-overflow-tooltip></el-table-column>
+				<!-- <el-table-column prop="month" :label="$t('departmentalDaily.month')" show-overflow-tooltip></el-table-column> -->
 				<el-table-column prop="city" :label="$t('departmentalDaily.city')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="deptName" :label="$t('departmentalDaily.deptName')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="lushang" :label="$t('departmentalDaily.lushang')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="mendian" :label="$t('departmentalDaily.mendian')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="jiangke" :label="$t('departmentalDaily.jiangke')" show-overflow-tooltip></el-table-column>
@@ -66,7 +68,7 @@
 				<el-table-column prop="yizhenNum" :label="$t('departmentalDaily.yizhenNum')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="chengjiaoNum" :label="$t('departmentalDaily.chengjiaoNum')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="chudan" :label="$t('departmentalDaily.chudan')" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="chudan" :label="$t('departmentalDaily.chudan')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="unitPrice" :label="$t('departmentalDaily.unitPrice')" show-overflow-tooltip></el-table-column>
 				<!-- <el-table-column :label="$t('common.action')" width="250">
 					<template #default="scope">
 						<el-button text type="primary" icon="edit-pen" v-auth="'sys_role_edit'" @click="roleDialogRef.openDialog(scope.row.roleId)">{{
@@ -94,7 +96,6 @@
 			</el-table>
 			<pagination @size-change="sizeChangeHandle" @current-change="currentChangeHandle" v-bind="state.pagination" />
 		</div>
-
 		<!-- 角色编辑、新增  -->
 		<!-- <role-dialog ref="roleDialogRef" @refresh="getDataList()" /> -->
 		<!-- 导入角色 -->
@@ -112,17 +113,12 @@
 
 <script setup lang="ts" name="systemRole">
 import { BasicTableProps, useTable } from '/@/hooks/table';
-import { pageList, delObj } from '/@/api/admin/role';
-import { useMessage, useMessageBox } from '/@/hooks/message';
+import { getList, getUser as userList } from '/@/api/admin/departmentalDaily';
 import { useI18n } from 'vue-i18n';
-
 // 引入组件
 const { t } = useI18n();
 
 // 定义变量内容
-const roleDialogRef = ref();
-const permessionRef = ref();
-const excelUploadRef = ref();
 const queryRef = ref();
 const showSearch = ref(true);
 // 多选rows
@@ -130,16 +126,40 @@ const selectObjs = ref([]) as any;
 // 是否可以多选
 const multiple = ref(true);
 
+const months = ref([]) as any;
 const state: BasicTableProps = reactive<BasicTableProps>({
 	queryForm: {
-		roleName: '',
+		userId: '',
+		// startTime: months?.length > 0 ? months.value[0] : '',
+		// endTime: months?.length > 0 ? months.value[1] : '',
+		month: '',
 	},
-	pageList: pageList, // H
-	descs: ['create_time'],
+	pageList: getList,
 });
+
+// const getDate = (value: Date[] | null) => {
+// 	if (Array.isArray(value)) {
+// 		state.queryForm.startTime = months.value[0];
+// 		state.queryForm.endTime = months.value[1];
+// 	} else {
+// 		state.queryForm.endTime = '';
+// 		state.queryForm.endTime = '';
+// 	}
+// };
 
 // 医生列表
 const nickNameList = ref([]) as any;
+
+// 角色数据
+const getTemplateData = () => {
+	userList().then((res) => {
+		console.log('res', res);
+		nickNameList.value = res.data;
+	});
+};
+
+// 获取模板信息
+getTemplateData();
 
 //  table hook
 const { getDataList, currentChangeHandle, sizeChangeHandle, downBlobFile, tableStyle } = useTable(state);
@@ -152,7 +172,7 @@ const resetQuery = () => {
 
 // 导出excel
 const exportExcel = () => {
-	downBlobFile('/admin/role/export', state.queryForm, 'role.xlsx');
+	downBlobFile('/admin/doctor/daily/deptMonthStatistics/export', state.queryForm, 'role.xlsx');
 };
 
 // 是否可以多选
@@ -164,22 +184,5 @@ const handleSelectable = (row: any) => {
 const handleSelectionChange = (objs: { roleId: string }[]) => {
 	selectObjs.value = objs.map(({ roleId }) => roleId);
 	multiple.value = !objs.length;
-};
-
-// 删除操作
-const handleDelete = async (ids: string[]) => {
-	try {
-		await useMessageBox().confirm(t('common.delConfirmText'));
-	} catch {
-		return;
-	}
-
-	try {
-		await delObj(ids);
-		getDataList();
-		useMessage().success(t('common.delSuccessText'));
-	} catch (err: any) {
-		useMessage().error(err.msg);
-	}
 };
 </script>

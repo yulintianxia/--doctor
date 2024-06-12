@@ -122,6 +122,7 @@ export function useTable(options?: BasicTableProps) {
 				// 开始加载数据，设置state.loading为true
 				state.loading = true;
 
+				// console.log('state.queryForm', ...state.queryForm);
 				// 调用state.pageList方法发起分页查询
 				const res = await state.pageList({
 					...state.queryForm,

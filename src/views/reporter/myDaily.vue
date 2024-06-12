@@ -3,9 +3,21 @@
 		<div class="layout-padding-auto layout-padding-view">
 			<el-row shadow="hover" v-show="showSearch" class="ml10">
 				<el-form :model="state.queryForm" ref="queryRef" :inline="true" @keyup.enter="getDataList">
-					<!-- <el-form-item :label="$t('departmentalDaily.month')" prop="month">
-						<el-input :placeholder="$t('departmentalDaily.inputRoleNameTip')" v-model="state.queryForm.roleName" />
-					</el-form-item> -->
+					<el-form-item :label="t('departmentalDaily.nickname')" prop="userId">
+						<el-select collapse-tags collapse-tags-tooltip v-model="state.queryForm.userId">
+							<el-option :key="index" :label="item.nickname" :value="item.userId" v-for="(item, index) in nickNameList"></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item :label="t('departmentalDaily.time')" prop="time">
+						<el-date-picker
+							v-model="state.queryForm.time"
+							type="daterange"
+							range-separator="到"
+							start-placeholder="开始时间"
+							end-placeholder="结束时间"
+							value-format="YYYY-MM-DD"
+						/>
+					</el-form-item>
 
 					<el-form-item>
 						<el-button icon="search" type="primary" @click="getDataList">
@@ -47,8 +59,9 @@
 				<el-table-column type="selection" :selectable="handleSelectable" width="50" align="center" />
 				<el-table-column type="index" :label="$t('departmentalDaily.index')" width="70" />
 				<el-table-column prop="nickname" :label="$t('departmentalDaily.nickname')" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="month" :label="$t('departmentalDaily.month')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="time" :label="$t('departmentalDaily.time')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="city" :label="$t('departmentalDaily.city')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="deptName" :label="$t('departmentalDaily.deptName')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="lushang" :label="$t('departmentalDaily.lushang')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="mendian" :label="$t('departmentalDaily.mendian')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="jiangke" :label="$t('departmentalDaily.jiangke')" show-overflow-tooltip></el-table-column>
@@ -56,7 +69,7 @@
 				<el-table-column prop="yizhenNum" :label="$t('departmentalDaily.yizhenNum')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="chengjiaoNum" :label="$t('departmentalDaily.chengjiaoNum')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="chudan" :label="$t('departmentalDaily.chudan')" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="chudan" :label="$t('departmentalDaily.chudan')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="unitPrice" :label="$t('departmentalDaily.unitPrice')" show-overflow-tooltip></el-table-column>
 				<!-- <el-table-column :label="$t('common.action')" width="250">
 					<template #default="scope">
 						<el-button text type="primary" icon="edit-pen" v-auth="'sys_role_edit'" @click="roleDialogRef.openDialog(scope.row.roleId)">{{
@@ -102,7 +115,7 @@
 
 <script setup lang="ts" name="systemRole">
 import { BasicTableProps, useTable } from '/@/hooks/table';
-import { pageList, delObj } from '/@/api/admin/role';
+import { myDailyGetList, getUser as userList } from '/@/api/admin/departmentalDaily';
 import { useMessage, useMessageBox } from '/@/hooks/message';
 import { useI18n } from 'vue-i18n';
 
@@ -122,11 +135,23 @@ const multiple = ref(true);
 
 const state: BasicTableProps = reactive<BasicTableProps>({
 	queryForm: {
-		roleName: '',
+		time: '',
+		userId: '',
 	},
-	pageList: pageList, // H
-	descs: ['create_time'],
+	pageList: myDailyGetList, // H
+	// descs: ['create_time'],
 });
+
+const nickNameList = ref([]) as any;
+
+// 角色数据
+const getTemplateData = () => {
+	userList().then((res) => {
+		nickNameList.value = res.data;
+	});
+};
+
+getTemplateData();
 
 //  table hook
 const { getDataList, currentChangeHandle, sizeChangeHandle, downBlobFile, tableStyle } = useTable(state);
@@ -139,7 +164,7 @@ const resetQuery = () => {
 
 // 导出excel
 const exportExcel = () => {
-	downBlobFile('/admin/role/export', state.queryForm, 'role.xlsx');
+	downBlobFile('/admin/doctor/daily/monthDailyInfo/export', state.queryForm, 'role.xlsx');
 };
 
 // 是否可以多选
@@ -151,22 +176,5 @@ const handleSelectable = (row: any) => {
 const handleSelectionChange = (objs: { roleId: string }[]) => {
 	selectObjs.value = objs.map(({ roleId }) => roleId);
 	multiple.value = !objs.length;
-};
-
-// 删除操作
-const handleDelete = async (ids: string[]) => {
-	try {
-		await useMessageBox().confirm(t('common.delConfirmText'));
-	} catch {
-		return;
-	}
-
-	try {
-		await delObj(ids);
-		getDataList();
-		useMessage().success(t('common.delSuccessText'));
-	} catch (err: any) {
-		useMessage().error(err.msg);
-	}
 };
 </script>

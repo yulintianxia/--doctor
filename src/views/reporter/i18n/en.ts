@@ -13,6 +13,8 @@ export default {
 		chengjiaoNum: 'Number of transactions in free clinics(individual)',
 		chudan: 'Appointment for consultation and issuance of documents(pot)',
 		unitPrice: 'Transaction unit price(¥)',
+		time: 'time',
+		deptName: 'deptName',
 		// please_enter_the_role_Code: 'please enter the role Code',
 		// please_enter_the_role_description: 'please enter the role description',
 		// menu_authority: 'menu authority',

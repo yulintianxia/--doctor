@@ -1,9 +1,7 @@
 <template>
-	<el-form size="large" class="login-content-form" ref="loginFormRef" :rules="loginRules" :model="state.ruleForm"
-		@keyup.enter="onSignIn">
+	<el-form size="large" class="login-content-form" ref="loginFormRef" :rules="loginRules" :model="state.ruleForm" @keyup.enter="onSignIn">
 		<el-form-item class="login-animation1" prop="username">
-			<el-input text :placeholder="$t('password.accountPlaceholder1')" v-model="state.ruleForm.username" clearable
-				autocomplete="off">
+			<el-input text :placeholder="$t('password.accountPlaceholder1')" v-model="state.ruleForm.username" clearable autocomplete="off">
 				<template #prefix>
 					<el-icon class="el-input__icon">
 						<ele-User />
@@ -12,25 +10,30 @@
 			</el-input>
 		</el-form-item>
 		<el-form-item class="login-animation2" prop="password">
-			<el-input :type="state.isShowPassword ? 'text' : 'password'" :placeholder="$t('password.accountPlaceholder2')"
-				v-model="state.ruleForm.password" autocomplete="off">
+			<el-input
+				:type="state.isShowPassword ? 'text' : 'password'"
+				:placeholder="$t('password.accountPlaceholder2')"
+				v-model="state.ruleForm.password"
+				autocomplete="off"
+			>
 				<template #prefix>
 					<el-icon class="el-input__icon">
 						<ele-Unlock />
 					</el-icon>
 				</template>
 				<template #suffix>
-					<i class="iconfont el-input__icon login-content-password"
+					<i
+						class="iconfont el-input__icon login-content-password"
 						:class="state.isShowPassword ? 'icon-yincangmima' : 'icon-xianshimima'"
-						@click="state.isShowPassword = !state.isShowPassword">
+						@click="state.isShowPassword = !state.isShowPassword"
+					>
 					</i>
 				</template>
 			</el-input>
 		</el-form-item>
 		<el-form-item class="login-animation2" prop="code" v-if="verifyEnable">
 			<el-col :span="15">
-				<el-input text maxlength="4" :placeholder="$t('mobile.placeholder2')" v-model="state.ruleForm.code"
-					clearable autocomplete="off">
+				<el-input text maxlength="4" :placeholder="$t('mobile.placeholder2')" v-model="state.ruleForm.code" clearable autocomplete="off">
 					<template #prefix>
 						<el-icon class="el-input__icon">
 							<ele-Position />
@@ -40,7 +43,7 @@
 			</el-col>
 			<el-col :span="1"></el-col>
 			<el-col :span="8">
-				<img :src="imgSrc" @click="getVerifyCode">
+				<img :src="imgSrc" @click="getVerifyCode" />
 			</el-col>
 		</el-form-item>
 		<el-form-item class="login-animation4">
@@ -69,10 +72,10 @@ const state = reactive({
 	isShowPassword: false, // 是否显示密码
 	ruleForm: {
 		// 表单数据
-		username: 'admin', // 用户名
-		password: '123456', // 密码
+		username: '', // 用户名
+		password: '', // 密码
 		code: '', // 验证码
-		randomStr: '', // 验证码随机数
+		// randomStr: '', // 验证码随机数
 	},
 });
 
@@ -88,13 +91,13 @@ const imgSrc = ref('');
 
 //获取验证码图片
 const getVerifyCode = () => {
-	state.ruleForm.randomStr = generateUUID();
-	imgSrc.value = `${import.meta.env.VITE_API_URL}${import.meta.env.VITE_IS_MICRO == 'false' ? '/admin' : '/auth'}/code/image?randomStr=${state.ruleForm.randomStr}`;
+	// state.ruleForm.randomStr = generateUUID();
+	// imgSrc.value = `${import.meta.env.VITE_API_URL}${import.meta.env.VITE_IS_MICRO == 'false' ? '/admin' : '/auth'}/code/image?randomStr=${state.ruleForm.randomStr}`;
 };
 
 // 账号密码登录
 const onSignIn = async () => {
-	const valid = await loginFormRef.value.validate().catch(() => { }); // 表单校验
+	const valid = await loginFormRef.value.validate().catch(() => {}); // 表单校验
 	if (!valid) return false;
 
 	loading.value = true; // 正在登录中
