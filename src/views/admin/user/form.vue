@@ -149,7 +149,7 @@ const dataRules = ref({
 	// 姓名校验，不能为空、只能是中文
 	name: [
 		{ required: true, message: '姓名不能为空', trigger: 'blur' },
-		{ validator: rule.chinese, trigger: 'blur' },
+		// { validator: rule.chinese, trigger: 'blur' },
 	],
 	deptId: [{ required: true, message: '部门不能为空', trigger: 'blur' }],
 	role: [{ required: true, message: '角色不能为空', trigger: 'blur' }],
@@ -184,7 +184,7 @@ const openDialog = async (id: string) => {
 	getPostData();
 	getRoleData();
 
-    // 修改获取用户信息
+	// 修改获取用户信息
 	if (id) {
 		dataForm.userId = id;
 		await getUserData(id);

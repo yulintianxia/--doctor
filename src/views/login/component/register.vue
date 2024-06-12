@@ -128,16 +128,16 @@ const dataRules = reactive({
 			trigger: 'blur',
 		},
 		// 判断密码强度是否达到要求
-		{
-			validator: (_rule, _value, callback) => {
-				if (Number(score.value) < 2) {
-					callback('密码强度太低');
-				} else {
-					callback();
-				}
-			},
-			trigger: 'blur',
-		},
+		// {
+		// 	validator: (_rule, _value, callback) => {
+		// 		if (Number(score.value) < 2) {
+		// 			callback('密码强度太低');
+		// 		} else {
+		// 			callback();
+		// 		}
+		// 	},
+		// 	trigger: 'blur',
+		// },
 	],
 	checked: [{ required: true, message: '请阅读并同意条款', trigger: 'blur' }],
 });
