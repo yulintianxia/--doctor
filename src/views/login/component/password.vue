@@ -102,7 +102,10 @@ const onSignIn = async () => {
 
 	loading.value = true; // 正在登录中
 	try {
-		await useUserInfo().login(state.ruleForm); // 调用登录方法
+		let res: any = await useUserInfo().login(state.ruleForm); // 调用登录方法
+		if (res?.user_id) {
+			sessionStorage.setItem('user_id', res.user_id);
+		}
 		emit('signInSuccess'); // 触发事件
 	} finally {
 		getVerifyCode();

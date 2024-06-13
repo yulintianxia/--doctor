@@ -1,7 +1,8 @@
 <template>
 	<div class="layout-footer pb5">
 		<div class="layout-footer-warp">
-			<div class="mt5">{{ footerAuthor }}</div>
+			<!-- <div class="mt5">{{ footerAuthor }}</div> -->
+			<div class="mt5">©2024 布曼佳诺</div>
 		</div>
 	</div>
 </template>

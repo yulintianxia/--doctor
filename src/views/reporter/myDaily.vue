@@ -4,7 +4,7 @@
 			<el-row shadow="hover" v-show="showSearch" class="ml10">
 				<el-form :model="state.queryForm" ref="queryRef" :inline="true" @keyup.enter="getDataList">
 					<el-form-item :label="t('departmentalDaily.nickname')" prop="userId" required>
-						<el-select collapse-tags collapse-tags-tooltip v-model="state.queryForm.userId">
+						<el-select filterable collapse-tags collapse-tags-tooltip v-model="state.queryForm.userId">
 							<el-option :key="index" :label="item.nickname" :value="item.userId" v-for="(item, index) in nickNameList"></el-option>
 						</el-select>
 					</el-form-item>
@@ -151,9 +151,10 @@ const selectObjs = ref([]) as any;
 // 是否可以多选
 const multiple = ref(true);
 
+const userId = sessionStorage.getItem('user_id');
 const state: BasicTableProps = reactive<BasicTableProps>({
 	queryForm: {
-		userId: '',
+		userId,
 		// deptIds: '',
 	},
 	pageList: myDailyGetList, // H
@@ -211,6 +212,7 @@ const resetQuery = () => {
 	months.value = [];
 	delete state.queryForm.startDate;
 	delete state.queryForm.endDate;
+	state.queryForm.user_id = userId;
 	getDataList();
 };
 

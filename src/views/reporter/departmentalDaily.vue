@@ -4,7 +4,7 @@
 			<el-row shadow="hover" v-show="showSearch" class="ml10">
 				<el-form :model="state.queryForm" ref="queryRef" :inline="true" @keyup.enter="getDataList">
 					<el-form-item :label="t('departmentalDaily.nickname')" prop="userId">
-						<el-select collapse-tags collapse-tags-tooltip v-model="state.queryForm.userId" clearable>
+						<el-select filterable collapse-tags collapse-tags-tooltip v-model="state.queryForm.userId" clearable>
 							<el-option :key="index" :label="item.nickname" :value="item.userId" v-for="(item, index) in nickNameList"></el-option>
 						</el-select>
 					</el-form-item>

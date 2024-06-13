@@ -151,6 +151,10 @@ const dataRules = ref({
 		{ required: true, message: '姓名不能为空', trigger: 'blur' },
 		// { validator: rule.chinese, trigger: 'blur' },
 	],
+	nickname: [
+		{ required: true, message: '昵称不能为空', trigger: 'blur' },
+		// { validator: rule.chinese, trigger: 'blur' },
+	],
 	deptId: [{ required: true, message: '部门不能为空', trigger: 'blur' }],
 	role: [{ required: true, message: '角色不能为空', trigger: 'blur' }],
 	post: [{ required: true, message: '岗位不能为空', trigger: 'blur' }],

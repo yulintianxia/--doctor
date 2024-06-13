@@ -87,7 +87,10 @@ const handleLogin = async () => {
 
 	try {
 		loading.value = true;
-		await useUserInfo().loginByMobile(loginForm);
+		let res: any = await useUserInfo().loginByMobile(loginForm);
+		if (res?.user_id) {
+			sessionStorage.setItem('user_id', res.user_id);
+		}
 		emit('signInSuccess');
 	} finally {
 		loading.value = false;

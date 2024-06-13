@@ -1,7 +1,7 @@
 export default {
 	departmentalDaily: {
 		index: '#',
-		nickname: '名字',
+		nickname: '昵称',
 		month: '月份',
 		chioceMonth: '选择月份',
 		city: '所在地级市',
