@@ -8,9 +8,23 @@
 							<el-option :key="index" :label="item.nickname" :value="item.userId" v-for="(item, index) in nickNameList"></el-option>
 						</el-select>
 					</el-form-item>
-					<el-form-item :label="t('departmentalDaily.chioceMonth')" prop="month">
+					<el-form-item :label="$t('departmentalDaily.deptName')" prop="deptId">
+						<el-tree-select
+							:data="deptData"
+							:props="{ value: 'id', label: 'name', children: 'children' }"
+							check-strictly
+							class="w100"
+							clearable
+							placeholder="请选择所属部门"
+							v-model="state.queryForm.deptId"
+						>
+						</el-tree-select>
+					</el-form-item>
+
+					<el-form-item :label="t('departmentalDaily.chioceMonth')" prop="months">
 						<el-date-picker
-							v-model="state.queryForm.month"
+							@change="getDate"
+							v-model="months"
 							type="monthrange"
 							range-separator="到"
 							start-placeholder="开始月份"
@@ -115,6 +129,7 @@
 import { BasicTableProps, useTable } from '/@/hooks/table';
 import { getList, getUser as userList } from '/@/api/admin/departmentalDaily';
 import { useI18n } from 'vue-i18n';
+import { deptTree } from '/@/api/admin/dept';
 // 引入组件
 const { t } = useI18n();
 
@@ -130,22 +145,33 @@ const months = ref([]) as any;
 const state: BasicTableProps = reactive<BasicTableProps>({
 	queryForm: {
 		userId: '',
-		// startTime: months?.length > 0 ? months.value[0] : '',
-		// endTime: months?.length > 0 ? months.value[1] : '',
-		month: '',
+		startDate: '',
+		endDate: '',
+		deptId: '',
 	},
 	pageList: getList,
 });
+const deptData = ref<any[]>([]);
 
-// const getDate = (value: Date[] | null) => {
-// 	if (Array.isArray(value)) {
-// 		state.queryForm.startTime = months.value[0];
-// 		state.queryForm.endTime = months.value[1];
-// 	} else {
-// 		state.queryForm.endTime = '';
-// 		state.queryForm.endTime = '';
-// 	}
-// };
+// 初始化部门数据
+const getDeptData = () => {
+	// 获取部门数据
+	deptTree().then((res) => {
+		deptData.value = res.data;
+	});
+};
+
+// 加载使用的数据
+getDeptData();
+const getDate = (value: Date[] | null) => {
+	if (Array.isArray(value)) {
+		state.queryForm.startDate = months.value[0];
+		state.queryForm.endDate = months.value[1];
+	} else {
+		state.queryForm.startDate = '';
+		state.queryForm.endDate = '';
+	}
+};
 
 // 医生列表
 const nickNameList = ref([]) as any;
@@ -167,6 +193,7 @@ const { getDataList, currentChangeHandle, sizeChangeHandle, downBlobFile, tableS
 // 清空搜索条件
 const resetQuery = () => {
 	queryRef.value.resetFields();
+	months.value = [];
 	getDataList();
 };
 

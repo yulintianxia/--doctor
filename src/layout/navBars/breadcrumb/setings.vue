@@ -663,7 +663,7 @@ onMounted(() => {
 			// 深色模式
 			if (getThemeConfig.value.isIsDark) onAddDarkChange();
 			// 开启水印
-			onWartermarkChange();
+			// onWartermarkChange();
 			// 语言国际化
 			if (Local.get('themeConfig')) locale.value = Local.get('themeConfig').globalI18n;
 			// 初始化菜单样式等

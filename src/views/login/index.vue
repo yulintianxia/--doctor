@@ -16,9 +16,9 @@
 							<Password @signInSuccess="signInSuccess" />
 						</el-tab-pane>
 						<!-- 手机号登录 -->
-						<el-tab-pane :label="$t('label.two2')" name="mobile">
+						<!-- <el-tab-pane :label="$t('label.two2')" name="mobile">
 							<Mobile @signInSuccess="signInSuccess" />
-						</el-tab-pane>
+						</el-tab-pane> -->
 						<!-- 注册 -->
 						<el-tab-pane :label="$t('label.register')" name="register" v-if="registerEnable">
 							<Register @afterSuccess="tabsActiveName = 'account'" />
