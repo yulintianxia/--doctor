@@ -15,6 +15,10 @@ export default {
 		unitPrice: 'Transaction unit price(¥)',
 		time: 'time',
 		deptName: 'deptName',
+		otherWork: 'otherWork',
+		marketFeedback: 'otherWork',
+		remark: 'remark',
+		// please_enter_the_role_Code
 		// please_enter_the_role_Code: 'please enter the role Code',
 		// please_enter_the_role_description: 'please enter the role description',
 		// menu_authority: 'menu authority',

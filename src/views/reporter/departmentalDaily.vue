@@ -4,11 +4,11 @@
 			<el-row shadow="hover" v-show="showSearch" class="ml10">
 				<el-form :model="state.queryForm" ref="queryRef" :inline="true" @keyup.enter="getDataList">
 					<el-form-item :label="t('departmentalDaily.nickname')" prop="userId">
-						<el-select collapse-tags collapse-tags-tooltip v-model="state.queryForm.userId">
+						<el-select collapse-tags collapse-tags-tooltip v-model="state.queryForm.userId" clearable>
 							<el-option :key="index" :label="item.nickname" :value="item.userId" v-for="(item, index) in nickNameList"></el-option>
 						</el-select>
 					</el-form-item>
-					<el-form-item :label="$t('departmentalDaily.deptName')" prop="deptId">
+					<!-- <el-form-item :label="$t('departmentalDaily.deptName')" prop="deptIds">
 						<el-tree-select
 							:data="deptData"
 							:props="{ value: 'id', label: 'name', children: 'children' }"
@@ -16,10 +16,10 @@
 							class="w100"
 							clearable
 							placeholder="请选择所属部门"
-							v-model="state.queryForm.deptId"
+							v-model="state.queryForm.deptIds"
 						>
 						</el-tree-select>
-					</el-form-item>
+					</el-form-item> -->
 
 					<el-form-item :label="t('departmentalDaily.chioceMonth')" prop="months">
 						<el-date-picker
@@ -73,7 +73,7 @@
 				<el-table-column type="index" :label="$t('departmentalDaily.index')" width="70" />
 				<el-table-column prop="nickname" :label="$t('departmentalDaily.nickname')" show-overflow-tooltip></el-table-column>
 				<!-- <el-table-column prop="month" :label="$t('departmentalDaily.month')" show-overflow-tooltip></el-table-column> -->
-				<el-table-column prop="city" :label="$t('departmentalDaily.city')" show-overflow-tooltip></el-table-column>
+				<!-- <el-table-column prop="city" :label="$t('departmentalDaily.city')" show-overflow-tooltip></el-table-column> -->
 				<el-table-column prop="deptName" :label="$t('departmentalDaily.deptName')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="lushang" :label="$t('departmentalDaily.lushang')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="mendian" :label="$t('departmentalDaily.mendian')" show-overflow-tooltip></el-table-column>
@@ -145,9 +145,9 @@ const months = ref([]) as any;
 const state: BasicTableProps = reactive<BasicTableProps>({
 	queryForm: {
 		userId: '',
-		startDate: '',
-		endDate: '',
-		deptId: '',
+		// startDate: '',
+		// endDate: '',
+		// deptIds: '',
 	},
 	pageList: getList,
 });
@@ -165,11 +165,18 @@ const getDeptData = () => {
 getDeptData();
 const getDate = (value: Date[] | null) => {
 	if (Array.isArray(value)) {
-		state.queryForm.startDate = months.value[0];
-		state.queryForm.endDate = months.value[1];
+		state.queryForm = {
+			...state.queryForm,
+			startDate: months.value[0],
+			endDate: months.value[1],
+		};
+		// state.queryForm.startDate = months.value[0];
+		// state.queryForm.endDate = months.value[1];
 	} else {
-		state.queryForm.startDate = '';
-		state.queryForm.endDate = '';
+		// state.queryForm.startDate = '';
+		// state.queryForm.endDate = '';
+		delete state.queryForm.startDate;
+		delete state.queryForm.endDate;
 	}
 };
 
@@ -193,13 +200,15 @@ const { getDataList, currentChangeHandle, sizeChangeHandle, downBlobFile, tableS
 // 清空搜索条件
 const resetQuery = () => {
 	queryRef.value.resetFields();
+	delete state.queryForm.startDate;
+	delete state.queryForm.endDate;
 	months.value = [];
 	getDataList();
 };
 
 // 导出excel
 const exportExcel = () => {
-	downBlobFile('/admin/doctor/daily/deptMonthStatistics/export', state.queryForm, 'role.xlsx');
+	downBlobFile('/admin/doctor/daily/deptMonthStatistics/export', state.queryForm, '部门领导日报.xlsx');
 };
 
 // 是否可以多选

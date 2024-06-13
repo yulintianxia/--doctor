@@ -3,12 +3,12 @@
 		<div class="layout-padding-auto layout-padding-view">
 			<el-row shadow="hover" v-show="showSearch" class="ml10">
 				<el-form :model="state.queryForm" ref="queryRef" :inline="true" @keyup.enter="getDataList">
-					<el-form-item :label="t('departmentalDaily.nickname')" prop="userId">
+					<el-form-item :label="t('departmentalDaily.nickname')" prop="userId" required>
 						<el-select collapse-tags collapse-tags-tooltip v-model="state.queryForm.userId">
 							<el-option :key="index" :label="item.nickname" :value="item.userId" v-for="(item, index) in nickNameList"></el-option>
 						</el-select>
 					</el-form-item>
-					<el-form-item :label="$t('departmentalDaily.deptName')" prop="deptId">
+					<!-- <el-form-item :label="$t('departmentalDaily.deptName')" prop="deptIds">
 						<el-tree-select
 							:data="deptData"
 							:props="{ value: 'id', label: 'name', children: 'children' }"
@@ -16,10 +16,10 @@
 							class="w100"
 							clearable
 							placeholder="请选择所属部门"
-							v-model="state.queryForm.deptId"
+							v-model="state.queryForm.deptIds"
 						>
 						</el-tree-select>
-					</el-form-item>
+					</el-form-item> -->
 
 					<el-form-item :label="t('departmentalDaily.time')" prop="months">
 						<el-date-picker
@@ -70,10 +70,10 @@
 				:cell-style="tableStyle.cellStyle"
 				:header-cell-style="tableStyle.headerCellStyle"
 			>
-				<el-table-column type="selection" :selectable="handleSelectable" width="50" align="center" />
+				<!-- <el-table-column type="selection" :selectable="handleSelectable" width="50" align="center" /> -->
 				<el-table-column type="index" :label="$t('departmentalDaily.index')" width="70" />
 				<el-table-column prop="nickname" :label="$t('departmentalDaily.nickname')" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="time" :label="$t('departmentalDaily.time')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="fillingDate" width="120" :label="$t('departmentalDaily.time')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="city" :label="$t('departmentalDaily.city')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="deptName" :label="$t('departmentalDaily.deptName')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="lushang" :label="$t('departmentalDaily.lushang')" show-overflow-tooltip></el-table-column>
@@ -84,6 +84,10 @@
 				<el-table-column prop="chengjiaoNum" :label="$t('departmentalDaily.chengjiaoNum')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="chudan" :label="$t('departmentalDaily.chudan')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="unitPrice" :label="$t('departmentalDaily.unitPrice')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="otherWork" :label="$t('departmentalDaily.otherWork')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="marketFeedback" :label="$t('departmentalDaily.marketFeedback')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="remark" :label="$t('departmentalDaily.remark')" show-overflow-tooltip></el-table-column>
+
 				<!-- <el-table-column :label="$t('common.action')" width="250">
 					<template #default="scope">
 						<el-button text type="primary" icon="edit-pen" v-auth="'sys_role_edit'" @click="roleDialogRef.openDialog(scope.row.roleId)">{{
@@ -149,9 +153,8 @@ const multiple = ref(true);
 
 const state: BasicTableProps = reactive<BasicTableProps>({
 	queryForm: {
-		time: '',
 		userId: '',
-		deptId: '',
+		// deptIds: '',
 	},
 	pageList: myDailyGetList, // H
 	// descs: ['create_time'],
@@ -160,11 +163,18 @@ const state: BasicTableProps = reactive<BasicTableProps>({
 const months = ref([]);
 const getDate = (value: Date[] | null) => {
 	if (Array.isArray(value)) {
-		state.queryForm.startDate = months.value[0];
-		state.queryForm.endDate = months.value[1];
+		// state.queryForm.startDate = months.value[0];
+		// state.queryForm.endDate = months.value[1];
+		state.queryForm = {
+			...state.queryForm,
+			startDate: months.value[0],
+			endDate: months.value[1],
+		};
 	} else {
-		state.queryForm.startDate = '';
-		state.queryForm.endDate = '';
+		// state.queryForm.startDate = '';
+		// state.queryForm.endDate = '';
+		delete state.queryForm.startDate;
+		delete state.queryForm.endDate;
 	}
 };
 
@@ -199,12 +209,14 @@ const { getDataList, currentChangeHandle, sizeChangeHandle, downBlobFile, tableS
 const resetQuery = () => {
 	queryRef.value.resetFields();
 	months.value = [];
+	delete state.queryForm.startDate;
+	delete state.queryForm.endDate;
 	getDataList();
 };
 
 // 导出excel
 const exportExcel = () => {
-	downBlobFile('/admin/doctor/daily/monthDailyInfo/export', state.queryForm, 'role.xlsx');
+	downBlobFile('/admin/doctor/daily/monthDailyInfo/export', state.queryForm, '我的日报.xlsx');
 };
 
 // 是否可以多选
