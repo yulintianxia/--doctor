@@ -3,7 +3,7 @@
 		<div class="layout-padding-auto layout-padding-view">
 			<el-row shadow="hover" v-show="showSearch" class="ml10">
 				<el-form :model="state.queryForm" ref="queryRef" :inline="true" @keyup.enter="getDataList">
-					<el-form-item :label="t('departmentalDaily.nickname')" prop="userId" required>
+					<el-form-item :label="t('departmentalDaily.nickname')" prop="userId">
 						<el-select filterable collapse-tags collapse-tags-tooltip v-model="state.queryForm.userId">
 							<el-option :key="index" :label="item.nickname" :value="item.userId" v-for="(item, index) in nickNameList"></el-option>
 						</el-select>
@@ -155,7 +155,8 @@ const multiple = ref(true);
 const userId = sessionStorage.getItem('user_id');
 const state: BasicTableProps = reactive<BasicTableProps>({
 	queryForm: {
-		userId,
+		// userId,
+		userId: '',
 		// deptIds: '',
 	},
 	pageList: myDailyGetList, // H
@@ -213,7 +214,7 @@ const resetQuery = () => {
 	months.value = [];
 	delete state.queryForm.startDate;
 	delete state.queryForm.endDate;
-	state.queryForm.user_id = userId;
+	// state.queryForm.user_id = userId;
 	getDataList();
 };
 
