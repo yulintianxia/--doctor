@@ -74,6 +74,7 @@
 				<el-table-column prop="nickname" :label="$t('departmentalDaily.nickname')" show-overflow-tooltip></el-table-column>
 				<!-- <el-table-column prop="month" :label="$t('departmentalDaily.month')" show-overflow-tooltip></el-table-column> -->
 				<!-- <el-table-column prop="city" :label="$t('departmentalDaily.city')" show-overflow-tooltip></el-table-column> -->
+				<el-table-column prop="roleName" :label="$t('departmentalDaily.roleName')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="deptName" :label="$t('departmentalDaily.deptName')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="lushang" :label="$t('departmentalDaily.lushang')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="mendian" :label="$t('departmentalDaily.mendian')" show-overflow-tooltip></el-table-column>

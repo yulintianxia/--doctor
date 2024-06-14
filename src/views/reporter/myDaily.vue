@@ -73,6 +73,7 @@
 				<!-- <el-table-column type="selection" :selectable="handleSelectable" width="50" align="center" /> -->
 				<el-table-column type="index" :label="$t('departmentalDaily.index')" width="70" />
 				<el-table-column prop="nickname" :label="$t('departmentalDaily.nickname')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="roleName" :label="$t('departmentalDaily.roleName')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="fillingDate" width="120" :label="$t('departmentalDaily.time')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="city" :label="$t('departmentalDaily.city')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="deptName" :label="$t('departmentalDaily.deptName')" show-overflow-tooltip></el-table-column>
