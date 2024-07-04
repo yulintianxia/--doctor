@@ -25,4 +25,14 @@ export default {
 		// menu_authority: 'menu authority',
 		// please_select: 'please select',
 	},
+	trip: {
+		index: '#',
+		group: 'group',
+		teacherName: 'teacherName',
+		months: 'month',
+		exportIn: 'exportIn',
+		city: 'city',
+		tripExportIn: 'trip exportIn',
+		calendar:"calendar"
+	},
 };

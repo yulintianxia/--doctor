@@ -19,9 +19,20 @@ export default {
 		marketFeedback: '市场反馈',
 		remark: '备注',
 		roleName: '角色',
+
 		// please_enter_the_role_Code: '请输入角色标识',
 		// please_enter_the_role_description: '请输入角色描述',
 		// menu_authority: '数据权限',
 		// please_select: 'please select',
+	},
+	trip: {
+		index: '#',
+		group: '小组',
+		teacherName: '老师名字',
+		months: '月份',
+		exportIn: '导入',
+		city: '城市',
+		tripExportIn: '行程导入',
+		calendar: '日历',
 	},
 };
